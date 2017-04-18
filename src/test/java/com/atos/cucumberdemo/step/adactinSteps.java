@@ -42,6 +42,18 @@ public class adactinSteps {
         webDriver.get("http://adactin.com/HotelAppBuild2/");
     }
 
+    @Given("^I am on the current site$")
+    public void I_am_on_the_current_site() throws Throwable {
+        webDriver.manage().window();
+        webDriver.get("http://adactin.com/HotelAppBuild3/");
+    }
+
+    @Given("^I am on the adactin site with current user$")
+    public void I_am_on_the_adactin_site_with_current_user() throws Throwable {
+        webDriver.manage().window().maximize();
+        webDriver.get("http://adactin.com/HotelAppBuild2/");
+    }
+
     @When("^I log in with my credentials$")
     public void I_log_in_with_my_credentials() throws Throwable {
         webDriver.findElement(By.id("username")).sendKeys("TestlabCucumberDemo");
