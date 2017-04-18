@@ -20,11 +20,6 @@ Feature: TC-101
     When I log in with the wrong credentials
     Then I should get a message
 
-  Scenario: Log in with wrong credentials test 1
-    Given I am on the adactin site fgsdgdsg
-    When I log in with the wrong credentials dgdsgds
-    Then I should get a message sdgsds
-
   Scenario: Log in with wrong credentials test 2
     Given I am on the adactin site
     When I log in with the wrong credentials
