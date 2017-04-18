@@ -44,6 +44,12 @@ public class adactinSteps {
 
     @Given("^I am on the current site$")
     public void I_am_on_the_current_site() throws Throwable {
+        webDriver.manage().window();
+        webDriver.get("http://adactin.com/HotelAppBuild3/");
+    }
+
+    @Given("^I am on the adactin site with current user$")
+    public void I_am_on_the_adactin_site_with_current_user() throws Throwable {
         webDriver.manage().window().maximize();
         webDriver.get("http://adactin.com/HotelAppBuild2/");
     }
