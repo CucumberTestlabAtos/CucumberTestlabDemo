@@ -1,6 +1,6 @@
 package com.atos.cucumberdemo.step;
 
-
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -16,7 +16,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,6 +32,7 @@ public class adactinSteps {
     private List<String> results = new ArrayList<String>();
     private int adults;
     private int no_rooms;
+    private Map<String,String> inputMap = new HashMap<String,String>();     // new structure to store input values
 
     public adactinSteps(SharedDriver webDriver) {
         this.webDriver = webDriver; 
@@ -89,6 +92,8 @@ public class adactinSteps {
         element.clear();
         element.sendKeys(inputdate);
         this.results.add(inputdate);
+        // System.out.println(inputdate); //SvD
+        this.inputMap.put("DateCheckIn", inputdate);        // store DateCheckIn in input structure
     }
 
     @And("^the day that I check out is \"([^\"]*)\" days from now$")
@@ -102,6 +107,7 @@ public class adactinSteps {
         element.clear();
         element.sendKeys(inputdate);
         this.results.add(inputdate);
+        this.inputMap.put("DateCheckOut", inputdate);        // store DateCheckOut in input structure
     }
 
     @Then("^the search results in an error message$")
@@ -122,6 +128,7 @@ public class adactinSteps {
         //element.findElement(By.xpath("//select[@id='location']/option[text()='"+location+"']")).click();
         element.findElement(By.id("location")).click();
         element.sendKeys(location);
+        this.inputMap.put("Location", location);        // store Location in input structure
     }
 
     @And("^I select Hotel \"([^\"]*)\"$")
@@ -130,6 +137,7 @@ public class adactinSteps {
         WebElement element = webDriver.findElement(By.id("hotels"));
         element.click();
         element.sendKeys(hotels);
+        this.inputMap.put("Hotel", hotels);        // store Hotel in input structure
     }
 
     @And("^I select Room type \"([^\"]*)\"$")
@@ -138,6 +146,7 @@ public class adactinSteps {
         WebElement element = webDriver.findElement(By.id("room_type"));
         element.click();
         element.sendKeys(room);
+        this.inputMap.put("RoomType", room);        // store RoomType in input structure
     }
 
     @And("^I select the number of rooms \"([^\"]*)\"$")
@@ -151,7 +160,9 @@ public class adactinSteps {
         } else {
             element.click();
             element.sendKeys(room);
+
         }
+        this.inputMap.put("RoomNumber", room);        // store RoomNumber in input structure
     }
 
     @And("^I select the amount of adults \"([^\"]*)\"$")
@@ -166,6 +177,7 @@ public class adactinSteps {
             element.click();
             element.sendKeys(adult);
         }
+        this.inputMap.put("AdultCount", adult);        // store AdultCount in input structure
     }
 
     @And("^I select the amount of children \"([^\"]*)\"$")
@@ -178,6 +190,7 @@ public class adactinSteps {
             element.click();
             element.sendKeys(children);
         }
+        this.inputMap.put("ChildCount", children);        // store ChildCount in input structure
     }
 
     @Then("^The system should report an error message 'Enter Valid dates'$")
@@ -198,8 +211,12 @@ public class adactinSteps {
         for (Object object : results) {
             element = webDriver.findElement(By.xpath("//input[@value='" + object.toString() + "']"));
             //System.out.println(element.getAttribute("value"));
+            System.out.println("Object" + object.toString());
             assertEquals(element.getAttribute("value").toLowerCase(), object.toString().toLowerCase());
 
+        }
+        for(Map.Entry m:this.inputMap.entrySet()){
+            System.out.println(m.getKey()+" "+m.getValue()+".");
         }
     }
 
@@ -257,5 +274,13 @@ public class adactinSteps {
                 assertEquals(element.getAttribute("value").toLowerCase(), object.toString().toLowerCase());
             }
         }
+    }
+
+    @Then("^The check-in-and-out dates should be shown$")
+    public void theCheckInAndOutDatesShouldBeShown() throws Throwable {
+        // Inspected elements on Select Hotel page
+        // result-set is dynamically build, so id's are also dynamic
+        // for row with result holds elements: arr_date_0 (for arrival date) and dep_date_0 (for departure date)
+
     }
 }
