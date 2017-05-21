@@ -281,6 +281,23 @@ public class adactinSteps {
         // Inspected elements on Select Hotel page
         // result-set is dynamically build, so id's are also dynamic
         // for row with result holds elements: arr_date_0 (for arrival date) and dep_date_0 (for departure date)
+        String sDateIn, sDateOut;
+        // No results found ... not checked
+        WebElement element = webDriver.findElement(By.id("arr_date_0"));
+        // check if not found
+        sDateIn =  element.getAttribute("value");
+        element = webDriver.findElement(By.id("dep_date_0"));
+        // check if not found ?
+        sDateOut =  element.getAttribute("value");
+        assertEquals(this.inputMap.get("DateCheckIn"),sDateIn);
+        assertEquals(this.inputMap.get("DateCheckOut"),sDateOut);
+    }
 
+    @And("^I start the search$")
+    public void iStartTheSearch() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        // throw new PendingException();
+        webDriver.findElement(By.id("Submit")).click();
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
     }
 }
